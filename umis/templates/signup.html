@@ -3,13 +3,13 @@
 {% block content %}
 <div class="column is-half is-offset-one-quarter">
     <div class="box">
-        <form action="{{ url_for('auth.signup_post') }}" method="POST">
+        <form action="{{ url_for('auth.signup') }}" method="POST">
             <h1 class="title has-text-centered">Sign Up</h1>
 
             <div class="field">
-                <label class="label">Registration Number</label>
+                <label class="label">Student Number</label>
                 <div class="control">
-                    <input class="input" type="text" name="reg_no" placeholder="Your Student Number" required>
+                    <input class="input" type="text" name="student_no" placeholder="Your Student Number" required>
                 </div>
             </div>
 
@@ -21,7 +21,14 @@
             </div>
 
             <div class="field">
-                <label class="label">University Email</label>
+                <label class="label">Contact Number</label>
+                <div class="control">
+                    <input class="input" type="text" name="phone_no" placeholder="Phone Number" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Email (KLN)</label>
                 <div class="control">
                     <input class="input" type="email" name="email" placeholder="e.g. you@stu.kln.ac.lk" required>
                 </div>
@@ -34,6 +41,12 @@
                 </div>
             </div>
 
+            <div class="field">
+                <label class="label">Confirm Password</label>
+                <div class="control">
+                    <input class="input" type="password" name="confirm_password" placeholder="Confirm Password" required>
+                </div>
+            </div>
             <div class="field">
                 <div class="control">
                     <button class="button is-primary is-fullwidth" type="submit">Sign Up</button>

@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask.cli import with_appcontext
 from .models import User, Student, Staff,db
 import bcrypt
+from sqlalchemy import text
 
 auth = Blueprint('auth', __name__)
 
@@ -14,8 +15,15 @@ def login():
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
         
-        if user: 
-        #and check_password_hash(user.password, password):
+        if not user:
+            flash('User not found')
+            return redirect(url_for('auth.login'))
+        
+        if not user.password:
+            flash('No password set. Please sign up to set a password.')
+            return redirect(url_for('auth.signup'))
+        
+        if check_password_hash(user.password, password):
             login_user(user)
             if user.is_admin:
                 return redirect(url_for('main.view_admin_profile'))
@@ -26,43 +34,45 @@ def login():
     
     return render_template('login.html')
 
-# Route for displaying the signup form
-@auth.route('/signup', methods=['GET'])
+
+@auth.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        student_no = request.form.get('student_no')
+        nic = request.form.get('nic')
+        phone_no = request.form.get('phone_no')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        print(f"Email: {email}, Student No: {student_no}")
+        print(str(User.query.filter_by(email=email, reg_no=student_no)))
+
+        user = User.query.filter_by(email=email, reg_no=student_no).first()
+
+        if not user:
+            message = 'No matching record for student_no: ' + student_no + ' and email: ' + email
+            flash(message)
+            #flash('No matching student record found. Please check your email and student number.')
+            return redirect(url_for('auth.signup'))
+        
+        if user.password:
+            flash('Password already set. Please log in.')
+            return redirect(url_for('auth.login'))
+        
+        if password != confirm_password:
+            flash('Passwords do not match.')
+            return redirect(url_for('auth.signup'))
+        
+        user.nic = nic
+        user.phone_no = phone_no
+        user.password = generate_password_hash(password, method='pbkdf2:sha256')
+        db.session.commit()
+        
+        flash('Password set successfully. You can now log in.')
+        return redirect(url_for('auth.login'))
+    
     return render_template('signup.html')
-
-# Route for handling signup form submission
-@auth.route('/signup', methods=['POST'])
-def signup_post():
-    email = request.form.get('email')
-    nic = request.form.get('nic')
-    reg_no = request.form.get('reg_No')
-    password = request.form.get('password')
-    #hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-    hashed_password = generate_password_hash(password)
-
-    # Validate student number
-    if not StudentGrade.query.filter_by(studentNo=student_no).first():
-        flash('Invalid Student Number')
-        return redirect(url_for('auth.signup'))
-
-    # Validate email domain
-    if not email.endswith('@stu.kln.ac.lk'):
-        flash('Email must be a university email address (@stu.kln.ac.lk)')
-        return redirect(url_for('auth.signup'))
-
-    # Check if user exists
-    if User.query.filter_by(email=email).first():
-        flash('Email address already exists')
-        return redirect(url_for('auth.signup'))
-
-    # Create new user
-    new_user = User(email=email, nic=nic, reg_no=reg_no, password=hashed_password)
-
-    db.session.add(new_user)
-    db.session.commit()
-
-    return redirect(url_for('auth.login'))
 
 @auth.route('/logout')
 def logout():
@@ -187,3 +197,24 @@ def create_student():
         db.session.rollback()
         print(f"Unexpected error occurred: {str(e)}")
         return
+
+'''
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user = User.query.filter_by(email=email).first()
+        
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            if user.is_admin:
+                return redirect(url_for('main.view_admin_profile'))
+            elif user.user_type == 'student':
+                return redirect(url_for('main.view_student_profile'))
+        else:
+            flash('Invalid email or password')
+    
+    return render_template('login.html')
+'''
