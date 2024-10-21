@@ -1,0 +1,18 @@
+<div class="container">
+    <h2 class="title has-text-centered">Search Student Profile</h2>
+
+    <form method="POST" action="{{ url_for('main.view_admin_profile') }}">
+        <div class="field">
+            <label class="label">Student Number</label>
+            <div class="control">
+                <input class="input" type="text" name="studentNo" placeholder="Enter Student Number" required>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-primary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+

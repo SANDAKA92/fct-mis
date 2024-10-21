@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content has-text-centered">
+        <h1 class="title">{{ Logout }}</h1>
+        <br>
+        <a href="{{ url_for('auth.login') }}" class="button is-primary">Login</a>
+    </div>
+{% endblock %}

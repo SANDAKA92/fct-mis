@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title">Profile</h1>
+    <p class="subtitle">Welcome, {{ current_user.email }}!</p>
+
+    <h2 class="title is-4">Course Results</h2>
+    <table class="table is-fullwidth is-striped">
+        <thead>
+            <tr>
+                <th>Level</th>
+                <th>Semester</th>
+                <th>Course Code</th>
+                <th>Course Title</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grade in grades %}
+            <tr>
+                <td>{{ grade.level }}</td>
+                <td>{{ grade.semester }}</td>
+                <td>{{ grade.courseCode }}</td>
+                <td>{{ grade.comment }}</td>
+                <td>{{ grade.grade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="title is-4">Cumulative GPA</h2>
+    <p>Cumulative GPA: {{ cumulative_gpa }}</p>
+    <p>Credits Below C: {{ credits_below_c }}</p>
+    <p>Credits Greater Than C: {{ credits_greater_than_c }}</p>
+    <p>Total E Credits: {{ total_e_credits }}</p>
+</div>
+{% endblock %}
+

@@ -1,0 +1,51 @@
+# Ignore the mis2/ and instance/ directories
+mis2/
+instance/
+
+# Ignore Python bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environments
+env/
+venv/
+ENV/
+VENV/
+
+# Ignore Flask environment files
+instance/
+config.pyc
+*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore Jupyter Notebook checkpoints (if applicable)
+.ipynb_checkpoints/
+
+# Ignore compiled C extensions
+*.so
+
+# Ignore build and dist directories
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Ignore coverage reports
+.coverage
+.cache
+.pytest_cache/
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore environment variable files (such as secrets)
+.env
+*.env
+

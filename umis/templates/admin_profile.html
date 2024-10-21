@@ -1,0 +1,88 @@
+<style>
+    .grade-table {
+        border: 2px solid #333;
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .grade-table th, .grade-table td {
+        border: 1px solid #333;
+        padding: 8px;
+        text-align: left;
+    }
+    .grade-table th {
+        background-color: #f3f4f6;
+        font-weight: bold;
+    }
+    .grade-table thead th {
+        border-bottom: 2px solid #333;
+    }
+    .semester-section {
+        margin-bottom: 30px;
+    }
+    .semester-header {
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
+</style>
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1 style="text-align: center; margin-bottom: 20px;">Student Profile for {{ student.name }}</h1>
+    <h2 style="text-align: center; margin-bottom: 30px;">Student Number: {{ student.student_no }}</h2>
+
+    {% if grouped_results %}
+        {% for (academic_year, semester), results in grouped_results.items() %}
+            <div class="semester-section">
+                <h3 class="semester-header">Academic Year: {{ academic_year }} | Semester: {{ semester }}</h3>
+                <table class="grade-table">
+                    <thead>
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Degree Code</th>
+                            <th>Level</th>
+                            <th>CA Marks</th>
+                            <th>TH Marks</th>
+                            <th>PR Marks</th>
+                            <th>Total Marks</th>
+                            <th>CA Grade</th>
+                            <th>TH Grade</th>
+                            <th>PR Grade</th>
+                            <th>Final Grade</th>
+                            <th>Attempt rank</th>
+                            <th>Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                            <tr>
+                                <td>{{ result.courseCode }}</td>
+                                <td>{{ result.degreeCode }}</td>
+                                <td>{{ result.level }}</td>
+                                <td>{{ result.ca_marks }}</td>
+                                <td>{{ result.th_marks }}</td>
+                                <td>{{ result.pr_marks }}</td>
+                                <td>{{ result.total_marks }}</td>
+                                <td>{{ result.ca_grade }}</td>
+                                <td>{{ result.th_grade }}</td>
+                                <td>{{ result.pr_grade }}</td>
+                                <td>{{ result.grade }}</td>
+                                <td>{{ result.attempt }}</td>
+                                <td>
+                                    {% if result.grade == 'Inc' or 'Medical' in result.grd_comments %}
+                                        {{ result.grd_comments }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align: center; color: #666;">No results found for this student.</p>
+    {% endif %}
+</div>
+{% endblock %}

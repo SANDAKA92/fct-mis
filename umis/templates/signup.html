@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-half is-offset-one-quarter">
+    <div class="box">
+        <form action="{{ url_for('auth.signup_post') }}" method="POST">
+            <h1 class="title has-text-centered">Sign Up</h1>
+
+            <div class="field">
+                <label class="label">Registration Number</label>
+                <div class="control">
+                    <input class="input" type="text" name="reg_no" placeholder="Your Student Number" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">National Identity Card Number</label>
+                <div class="control">
+                    <input class="input" type="text" name="nic" placeholder="NIC Number" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">University Email</label>
+                <div class="control">
+                    <input class="input" type="email" name="email" placeholder="e.g. you@stu.kln.ac.lk" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Password</label>
+                <div class="control">
+                    <input class="input" type="password" name="password" placeholder="Create a Password" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <button class="button is-primary is-fullwidth" type="submit">Sign Up</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
