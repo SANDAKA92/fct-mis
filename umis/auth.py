@@ -45,15 +45,11 @@ def signup():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
 
-        print(f"Email: {email}, Student No: {student_no}")
-        print(str(User.query.filter_by(email=email, reg_no=student_no)))
-
         user = User.query.filter_by(email=email, reg_no=student_no).first()
 
         if not user:
             message = 'No matching record for student_no: ' + student_no + ' and email: ' + email
             flash(message)
-            #flash('No matching student record found. Please check your email and student number.')
             return redirect(url_for('auth.signup'))
         
         if user.password:
@@ -166,18 +162,6 @@ def create_student():
         #return
 
     try:
-        '''
-        # Create the user account
-        new_user = User(
-            reg_no=reg_no,
-            email=email,
-            password=hashed_password,
-            is_admin=False,
-            user_type='student'
-        )
-        db.session.add(new_user)
-        db.session.flush()  # This assigns the ID to new_user before commit
-        '''
         # Update the existing student record with the user_id
         existing_student.password = hashed_password
         existing_student.phone_no = phone_no  # Update phone number
@@ -198,23 +182,3 @@ def create_student():
         print(f"Unexpected error occurred: {str(e)}")
         return
 
-'''
-
-@auth.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-        user = User.query.filter_by(email=email).first()
-        
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            if user.is_admin:
-                return redirect(url_for('main.view_admin_profile'))
-            elif user.user_type == 'student':
-                return redirect(url_for('main.view_student_profile'))
-        else:
-            flash('Invalid email or password')
-    
-    return render_template('login.html')
-'''

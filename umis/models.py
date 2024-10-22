@@ -142,30 +142,3 @@ class GradeLetterInfo(db.Model):
     gpv = db.Column(db.Float)
 
 
-def calculate_gpa(student_no):
-    grades = StudentGrade.query.filter_by(studentNo=student_no).all()
-    total_gpv = 0
-    total_credits = 0
-    credits_below_c = 0
-    credits_greater_than_c = 0
-    total_e_credits = 0
-
-    for grade in grades:
-        grade_info = GradeLetterInfo.query.filter_by(gradeLetter=grade.grade).first()
-        course_info = DegreeCourseReq.query.filter_by(courseCode=grade.courseCode, degreeCode=grade.degreeCode).first()
-
-        if grade_info and course_info:
-            total_gpv += grade_info.gpv * course_info.gpaCredits
-            total_credits += course_info.gpaCredits
-
-            if grade.grade in ['C-','D+','D']:
-                credits_below_c += course_info.gpaCredits
-            if grade.grade in ['C+','B-','B','B+','A-','A','A+']:
-                credits_greater_than_c += course_info.gpaCredits
-            if grade.grade in ['E', 'Inc', 'Ab', 'Rpt']:
-                total_e_credits += course_info.gpaCredits
-
-    if total_credits == 0:
-        return 0.0, credits_below_c, credits_greater_than_c, total_e_credits
-
-    return total_gpv / total_credits, credits_below_c, credits_greater_than_c, total_e_credits
