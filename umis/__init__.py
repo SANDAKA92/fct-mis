@@ -25,7 +25,13 @@ def create_app():
     from .models import User
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        if user_id is None:
+            return None
+        try:
+            return User.query.get(int(user_id))
+        except ValueError:
+            return None
+
 
     # Register blueprints
     from .auth import auth as auth_blueprint  # Assuming 'auth' is the authentication blueprint

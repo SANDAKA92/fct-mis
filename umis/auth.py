@@ -11,14 +11,32 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+
+        # Create a session
+        session = db.session()
+
         email = request.form.get('email')
         password = request.form.get('password')
-        user = User.query.filter_by(email=email).first()
-        
-        if not user:
-            flash('User not found')
+        #user = User.query.filter(User.email == email).first()
+        sqlquery = text("SELECT * FROM User WHERE email = :email")
+        result = session.execute(sqlquery, {'email':email}).fetchone()
+
+
+
+        if not result:
+            flash('User not found ')
             return redirect(url_for('auth.login'))
-        
+
+        # Create a User instance from the result
+        user = User(
+            id=result.id,
+            email=result.email,
+            password=result.password,
+            reg_no=result.reg_no,
+            is_admin=result.is_admin,
+            user_type=result.user_type
+        )
+
         if not user.password:
             flash('No password set. Please sign up to set a password.')
             return redirect(url_for('auth.signup'))
@@ -31,6 +49,9 @@ def login():
                 return redirect(url_for('main.view_student_profile'))
         else:
             flash('Invalid email or password')
+
+        # Close session
+        session.close()
     
     return render_template('login.html')
 

@@ -1,6 +1,6 @@
 from flask import request, Blueprint,redirect, url_for, render_template, flash
 from flask_login import login_required, current_user
-from .models import User, Student, ExamResult, calculate_gpa
+from .models import User, Student, ExamResult
 
 main = Blueprint('main', __name__)
 
