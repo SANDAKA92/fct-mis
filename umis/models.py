@@ -326,7 +326,7 @@ class FEQuestionScore(db.Model):
     student = relationship("Student", back_populates="fe_question_score")
 
 class FEScore(db.Model):
-    __tablename__ = 'fe_question_score'
+    __tablename__ = 'fe_score'
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, ForeignKey('students.id'), nullable=False)
     first_examiner_FE_marks = db.Column(db.Float)
@@ -362,6 +362,22 @@ class CAAdjustment(db.Model):
     cas = relationship("ContinuousAssessments", back_populates="ca_adjustments")
     course_offering = relationship("CourseOffering", back_populates="ca_adjustments")
 
+
+class StudentCourseGrade(db.Model):
+    __tablename__ = 'student_course_grades'
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, ForeignKey('students.id'), nullable=False)
+    course_offering_id = db.Column(db.Integer, ForeignKey('course_offerings.id'), nullable=False)
+    ca_score = db.Column(db.Float)
+    th_score = db.Column(db.Float)
+    pr_score = db.Column(db.Float)
+    tot_score = db.Column(db.Float)
+    ca_grade = db.Column(db.Text)
+    th_grade = db.Column(db.Text)
+    pr_grade = db.Column(db.Text)
+    tot_grade = db.Column(db.Text)
+    course_offering = relationship("CourseOffering", back_populates="student_registrations")
+    student = relationship("Student", back_populates="course_registrations")
 
 # Student Course Registration and Attendance Models
 class StudentCourseRegistration(db.Model):

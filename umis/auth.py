@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.cli import with_appcontext
 from sqlalchemy.exc import SQLAlchemyError
-from .models_new import User, Student, Staff, UserRole, db
+from .models import User, Student, Staff, UserRole, db
 
 auth = Blueprint('auth', __name__)
 
