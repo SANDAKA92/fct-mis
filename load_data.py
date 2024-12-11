@@ -109,20 +109,20 @@ def load_data_examresults(csv_file):
                     attempt=row['attempt'],
                     studentNo=row['studentNo'],
                     courseCode=row['courseCode'],
-                    ca_marks=convert_to_float(row['ca']),  # Convert to float or None
-                    th_marks=convert_to_float(row['th']),  # Convert to float or None
-                    pr_marks=convert_to_float(row['pr']),  # Convert to float or None
+                    ca_marks=convert_to_float(row['ca_marks']),  # Convert to float or None
+                    th_marks=convert_to_float(row['th_marks']),  # Convert to float or None
+                    pr_marks=convert_to_float(row['pr_marks']),  # Convert to float or None
                     total_marks=convert_to_float(row['total_marks']),  # Convert to float or None
-                    grade=row['grade'],
-                    ca_grade=row['caGrade'],
-                    th_grade=row['thGrade'],
-                    pr_grade=row['prGrade'],
+                    grade=row['final_grade'],
+                    ca_grade=row['ca_grade'],
+                    th_grade=row['th_grade'],
+                    pr_grade=row['pr_grade'],
                     grd_comments=row['grd-comments'],
                 )
                 db.session.add(exam_result)  # Add the result to the session
             db.session.commit()  # Commit all the changes at once
 
 if __name__ == '__main__':
-    load_data_student('../bet_students.csv')  # Replace with your CSV file
+    load_data_student('../fctstudents.csv')  # Replace with your CSV file
     load_data_examresults('../exmresults.csv')  # Replace with your CSV file
 
